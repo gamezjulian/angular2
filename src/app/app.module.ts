@@ -9,20 +9,22 @@ import { appRoutes } from './router'
 import { RootComponent } from './components/root/root.component'
 
 //components
-import { ProductsListComponent } from './components/products/product-list.component'
 import { HomeComponent } from './components/home/home.component'
 import { Navigation } from './components/nav/nav.component'
+
+//modules
+import { ProductModule } from './components/products/product.module'
 
 @NgModule({
   declarations: [
     RootComponent,
-    ProductsListComponent,
     HomeComponent,
     Navigation
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    ProductModule
   ],
   providers: [],
   bootstrap: [RootComponent]
