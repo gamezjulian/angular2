@@ -20,6 +20,7 @@ export class AddProductComponent implements OnInit, AfterViewInit {
     productForm: FormGroup;
     validator: GenericValidator;
     displayMessage: { [key: string]: string } = {};
+    internation: boolean;
 
     private errorMessages = {
         code: {
@@ -33,7 +34,7 @@ export class AddProductComponent implements OnInit, AfterViewInit {
             range: 'Range is not valid',
             required: 'Price is required'
         },
-        description:{
+        description: {
             maxlength: 'Up to 20 chars allowed'
         }
     }
@@ -49,8 +50,16 @@ export class AddProductComponent implements OnInit, AfterViewInit {
             description: ['', Validators.maxLength(20)],
             price: ['', [Validators.required, ValidationFuncs.Price(0, 100)]],
             elaboration: ['National'],
-            internationalTax : ''
+            internationalTax: ''
         })
+
+        this.productForm.get('elaboration').valueChanges.subscribe(value => {
+            if (value == "International") {
+                this.productForm.patchValue({
+                    International: true
+                })
+            }
+        });
     }
 
     ngAfterViewInit(): void {

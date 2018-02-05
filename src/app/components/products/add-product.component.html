@@ -47,7 +47,7 @@
                 </label>
             </div>
         </div>
-        <div class="form-group" *ngIf="productForm.get('elaboration').value == 'International'">
+        <div class="form-group" *ngIf="international">
             <label for="internationalTax" class="col-md-2 control-label">International TAX</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" formControlName="internationalTax" placeholder="TAX" id="internationalTax">
