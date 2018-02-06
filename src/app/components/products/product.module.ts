@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http'
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProductData } from './products-data'
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 @NgModule({
     declarations: [
@@ -19,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ],
     imports: [
         HttpModule,
+        InMemoryWebApiModule.forRoot(ProductData),
         CommonModule,
         ReactiveFormsModule
     ],

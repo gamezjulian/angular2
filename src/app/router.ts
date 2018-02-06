@@ -6,7 +6,7 @@ import { ProductsListComponent } from './components/products/product-list.compon
 import { AddProductComponent } from './components/products/add-product.component'
 
 export const appRoutes: Routes = [
+    { path: '*', component: HomeComponent, pathMatch: 'full' },
     { path: 'products', component: ProductsListComponent },
-    { path: 'products/:id', component: AddProductComponent },
-    { path: '', component: HomeComponent, pathMatch: 'full' }
+    { path: 'products/:id', component: AddProductComponent },    
 ]

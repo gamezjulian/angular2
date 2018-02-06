@@ -14,6 +14,8 @@ import { Navigation } from './components/nav/nav.component'
 
 //modules
 import { ProductModule } from './components/products/product.module'
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api'
+
 
 @NgModule({
   declarations: [
