@@ -19,7 +19,8 @@ import { Product } from './product.entity';
 
 @Component({
     selector: 'add-product',
-    templateUrl: 'add-product.component.html'
+    templateUrl: 'add-product.component.html',
+    styleUrls: ['./add-product.component.sass']
 })
 export class AddProductComponent implements OnInit, AfterViewInit {
     @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
@@ -47,7 +48,7 @@ export class AddProductComponent implements OnInit, AfterViewInit {
             price: ['', [Validators.required, ValidationFuncs.Price(0, 100)]],
             elaboration: ['National'],
             internationalTax: '',
-            tags: this.fb.array([])
+            tags: this.fb.array([this.buildTagsForm()])
         })
 
         this.route.params.subscribe(params => {
@@ -81,12 +82,11 @@ export class AddProductComponent implements OnInit, AfterViewInit {
     }
 
     addTag(): void {
-        let tags = <FormArray>this.productForm.get('tags')
-        this.buildTagsForm();
+        (<FormArray>this.productForm.get('tags')).push(new FormControl());
     }
 
-    buildTagsForm(): void {
-        (<FormArray>this.productForm.get('tags')).push(new FormControl());
+    buildTagsForm(): FormControl {
+        return new FormControl();
     }
 
     isInternational(): boolean {
