@@ -18,21 +18,21 @@ export class ProductService {
         private http: Http) {
     }
 
-    getProduct(id: number): Observable<IProduct> {
+    public getProduct(id: number): Observable<IProduct> {
         return this.http.get(`${this.baseUrl}/${id}`)
             .map(this.getData)
             .do((item) => console.log(item))
             .catch(err => Observable.throw(err.json));
     }
 
-    getProducts(): Observable<IProduct[]> {
+    public getProducts(): Observable<IProduct[]> {
         return this.http.get(this.baseUrl)
             .map(this.getData)
             .do((item) => console.log(item))
             .catch(err => Observable.throw(err.json));
     }
 
-    addProduct(product: IProduct): Observable<IProduct> {
+    public addProduct(product: IProduct): Observable<IProduct> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
@@ -41,7 +41,21 @@ export class ProductService {
             .do(product => console.log(product));
     }
 
-    getData(response: Response): any {
+    public updateProduct(product: IProduct): Observable<IProduct> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.put(this.baseUrl, product, options)
+            .map(() => product)
+            .do(product => console.log(product));
+    }
+
+    public deleteProduct(product: IProduct): Observable<any> {
+        return this.http.delete(`${this.baseUrl}/${product.id}`)
+            .map(() => console.log(`Deleted product: ${product.id}`));
+    }
+
+    private getData(response: Response): any {
         let body = response.json();
 
         return body || {};

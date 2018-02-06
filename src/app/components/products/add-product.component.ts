@@ -15,6 +15,7 @@ import { ProductService } from './product.service';
 import { IProduct } from './product.interface';
 
 import { Router, ActivatedRoute } from '@angular/router'
+import { Product } from './product.entity';
 
 @Component({
     selector: 'add-product',
@@ -33,6 +34,8 @@ export class AddProductComponent implements OnInit, AfterViewInit {
         private productService: ProductService,
         private route: ActivatedRoute,
         private router: Router) {
+
+        this.product = new Product();
         this.validator = new GenericValidator(ValidationMessages);
     }
 
@@ -100,11 +103,28 @@ export class AddProductComponent implements OnInit, AfterViewInit {
         });
     }
 
+    cancel(): void {
+        this.goToProductList();
+    }
+
     save(): void {
         let p = Object.assign(this.product, this.productForm.value)
 
-        this.productService.addProduct(p).subscribe(() => {
-            this.productForm.reset();
-        });
+        if (p.id == 0) {
+
+            this.productService.addProduct(p).subscribe(() => {
+                this.productForm.reset();
+                this.goToProductList();
+            });
+        } else {
+            this.productService.updateProduct(p).subscribe(() => {
+                this.productForm.reset();
+                this.goToProductList();
+            });
+        }
+    }
+
+    goToProductList(): void {
+        this.router.navigate(['/products']);
     }
 }
