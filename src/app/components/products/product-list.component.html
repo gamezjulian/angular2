@@ -1,26 +1,31 @@
 <div class="container">
+    <!-- <h1>Products</h1>
+    <br /> -->
     <div class="row">
-        <h1>Products</h1>
-    </div>
-    <br />
-    <div class="row">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Tags</th>
+        <section class="col-sm-12">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Tags</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tr *ngFor="let product of products; let i = index">
+                    <td>{{product.id}}</td>
+                    <td>{{product.code}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.description}}</td>
+                    <td>{{product.tags | json}}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="edit(product.id)">Edit</button>
+                        <button class="btn btn-primary" (click)="delete(product.id)">Delete</button>
+                    </td>
                 </tr>
-            </thead>
-            <tr *ngFor="let product of products; let i = index">
-                <td>{{product.id}}</td>
-                <td>{{product.code}}</td>
-                <td>{{product.name}}</td>
-                <td>{{product.description}}</td>
-                <td>{{product.tags | json}}</td>
-            </tr>
-        </table>
+            </table>
+        </section>
     </div>
 </div>

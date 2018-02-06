@@ -14,6 +14,8 @@ import { ValidationMessages } from '../validators/validation-messages';
 import { ProductService } from './product.service';
 import { IProduct } from './product.interface';
 
+import { Router, ActivatedRoute } from '@angular/router'
+
 @Component({
     selector: 'add-product',
     templateUrl: 'add-product.component.html'
@@ -24,10 +26,13 @@ export class AddProductComponent implements OnInit, AfterViewInit {
     productForm: FormGroup;
     validator: GenericValidator;
     displayMessage: { [key: string]: string } = {};
-    product = {};
+    product: IProduct;
 
-    constructor(private fb: FormBuilder,
-        private productService: ProductService) {
+    constructor(
+        private fb: FormBuilder,
+        private productService: ProductService,
+        private route: ActivatedRoute,
+        private router: Router) {
         this.validator = new GenericValidator(ValidationMessages);
     }
 
@@ -39,19 +44,46 @@ export class AddProductComponent implements OnInit, AfterViewInit {
             price: ['', [Validators.required, ValidationFuncs.Price(0, 100)]],
             elaboration: ['National'],
             internationalTax: '',
-            tags: this.fb.array([this.buildTagsForm()])
+            tags: this.fb.array([])
         })
+
+        this.route.params.subscribe(params => {
+            let id = params['id'];
+
+            if (parseInt(id) != 0) {
+                this.loadProduct(id);
+            } else {
+                this.productForm.reset();
+            }
+        })
+    }
+
+    loadProduct(id: number): void {
+        this.productService.getProduct(id).
+            subscribe(p => {
+                this.product = p;
+
+                this.productForm.patchValue({
+                    id: this.product.id,
+                    code: this.product.code,
+                    name: this.product.name,
+                    description: this.product.description,
+                    price: this.product.price
+                })
+
+                if (this.product.tags.length) {
+                    this.productForm.setControl('tags', this.fb.array(this.product.tags));
+                }
+            })
     }
 
     addTag(): void {
         let tags = <FormArray>this.productForm.get('tags')
-        tags.push(this.buildTagsForm());
+        this.buildTagsForm();
     }
 
-    buildTagsForm(): FormGroup {
-        return this.fb.group({
-            tag: ''
-        })
+    buildTagsForm(): void {
+        (<FormArray>this.productForm.get('tags')).push(new FormControl());
     }
 
     isInternational(): boolean {
@@ -71,6 +103,8 @@ export class AddProductComponent implements OnInit, AfterViewInit {
     save(): void {
         let p = Object.assign(this.product, this.productForm.value)
 
-        this.productService.addProduct(p).subscribe();
+        this.productService.addProduct(p).subscribe(() => {
+            this.productForm.reset();
+        });
     }
 }

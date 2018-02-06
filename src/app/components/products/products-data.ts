@@ -12,7 +12,7 @@ export class ProductData implements InMemoryDbService {
                 'description': 'Product#1',
                 'name': 'Name#1',
                 'price': 60,
-                'tags': ['tag#1']
+                'tags': ['tag#1', 'tag#2', 'tag#3']
             }
         ];
         return { products };

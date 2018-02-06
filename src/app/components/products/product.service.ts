@@ -14,22 +14,22 @@ export class ProductService {
 
     private baseUrl = 'api/products';
 
-    /**
-     *
-     */
-    constructor(private http: Http) {
-
+    constructor(
+        private http: Http) {
     }
 
-    getProduct(id: number): any {
-        throw new DOMException();
+    getProduct(id: number): Observable<IProduct> {
+        return this.http.get(`${this.baseUrl}/${id}`)
+            .map(this.getData)
+            .do((item) => console.log(item))
+            .catch(err => Observable.throw(err.json));
     }
 
     getProducts(): Observable<IProduct[]> {
         return this.http.get(this.baseUrl)
-            .map(response => {
-                return response.json();
-            })
+            .map(this.getData)
+            .do((item) => console.log(item))
+            .catch(err => Observable.throw(err.json));
     }
 
     addProduct(product: IProduct): Observable<IProduct> {
@@ -39,5 +39,11 @@ export class ProductService {
         return this.http.post(this.baseUrl, product, options)
             .map(() => product)
             .do(product => console.log(product));
+    }
+
+    getData(response: Response): any {
+        let body = response.json();
+
+        return body || {};
     }
 }
